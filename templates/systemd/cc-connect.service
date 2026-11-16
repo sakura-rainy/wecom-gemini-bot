@@ -1,0 +1,18 @@
+[Unit]
+Description=cc-connect - AI Agent Chat Bridge
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/lib/node_modules/cc-connect/bin/cc-connect
+WorkingDirectory=/root/.cc-connect
+Restart=on-failure
+RestartSec=10
+Environment="CC_LOG_FILE=/root/.cc-connect/logs/cc-connect.log"
+Environment="CC_LOG_MAX_SIZE=10485760"
+Environment="CC_LOG_MAX_BACKUPS=3"
+Environment="PATH=/root/.opencode/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+[Install]
+WantedBy=multi-user.target

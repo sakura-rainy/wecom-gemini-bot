@@ -1,0 +1,39 @@
+# cc-connect 配置文件模板（请复制为 ~/.cc-connect/config.toml 后填入你自己的凭证）
+# 注意：全局字段（language、idle_timeout_mins、max_turn_time_mins）必须写在任何 [section] 之前
+
+language = "zh"
+idle_timeout_mins = 5     # 默认 120 分钟容易在 API 卡死时锁住队列，建议改为 5 分钟
+max_turn_time_mins = 15   # 单轮最长耗时上限（分钟）
+
+[display]
+thinking_messages = false # 隐藏英文思考过程气泡，让聊天窗口更清爽
+reply_footer = false      # 隐藏回复底部的 "模型 · 工作目录" 状态栏
+# tool_messages = false   # 如不希望显示工具调用进度，可取消注释
+# show_context_indicator = false # 如不希望显示 [ctx: ~N%] 提示，可取消注释
+
+[[projects]]
+name = "my-assistant"
+
+[projects.agent]
+type = "opencode"
+
+[projects.agent.options]
+work_dir = "/root/agent-workspace"
+
+# 模型推荐（Google AI Studio Free Tier 实测，具体以你当前项目可用额度为准）：
+# - 新项目 Key 推荐稳定高速：google/gemini-3.5-flash-lite
+# - 强推理尝鲜（高峰期偶发 503）：google/gemini-4-hydrogen
+# - 老项目 Key 可用稳态版：google/gemini-2.5-flash（部分新项目可能返回 404）
+# - 切勿使用 *-image 图像模型（Free Tier 配额通常为 0，会导致重试卡死）
+model = "google/gemini-3.5-flash-lite"
+
+[[projects.platforms]]
+type = "wecom"
+
+[projects.platforms.options]
+mode = "websocket"
+bot_id = "YOUR_WECOM_BOT_ID"
+bot_secret = "YOUR_WECOM_BOT_SECRET"
+
+# 建议正式使用后将 "*" 收紧为你自己的企业微信 UserID（可用日志中看到的 user_id），避免他人调用消耗额度
+allow_from = "*"
